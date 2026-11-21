@@ -1,98 +1,197 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  StatusBar,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { router } from 'expo-router';
 
 export default function HomeScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <View style={styles.top}>
+        <View style={styles.logo}>
+          <Text style={styles.logoText}>📚</Text>
+        </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+        <Text style={styles.brand}>StudyMate</Text>
+        <Text style={styles.tagline}>YOUR PERSONAL STUDY COMPANION</Text>
+      </View>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+      <View style={styles.hero}>
+        <View style={styles.circle}>
+          <Text style={styles.heroEmoji}>🎓</Text>
+          <View style={styles.smallCircle}>
+            <Text style={{ fontSize: 25 }}>✨</Text>
+          </View>
+        </View>
+
+        <Text style={styles.heading}>
+          Study smarter,{'\n'}not harder.
+        </Text>
+
+        <Text style={styles.description}>
+          Organize your tasks, plan your study sessions,
+          and achieve your goals one day at a time.
+        </Text>
+
+        <View style={styles.features}>
+          <View style={styles.feature}>
+            <Text style={styles.featureIcon}>✓</Text>
+            <Text style={styles.featureText}>Organize your tasks</Text>
+          </View>
+
+          <View style={styles.feature}>
+            <Text style={styles.featureIcon}>✓</Text>
+            <Text style={styles.featureText}>Track your progress</Text>
+          </View>
+
+          <View style={styles.feature}>
+            <Text style={styles.featureIcon}>✓</Text>
+            <Text style={styles.featureText}>Stay motivated</Text>
+          </View>
+        </View>
+      </View>
+
+      <View style={styles.bottom}>
+        <Pressable
+          style={styles.button}
+          onPress={() => router.push('/login')}
+        >
+          <Text style={styles.buttonText}>Get Started  →</Text>
+        </Pressable>
+
+        <Text style={styles.footer}>
+          A little progress every day adds up.
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: '#F8F6FF',
+    paddingHorizontal: 28,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
+  top: {
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    paddingTop: 25,
   },
-  heroSection: {
+  logo: {
+    width: 72,
+    height: 72,
+    backgroundColor: '#6C4CE4',
+    borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
   },
-  title: {
+  logoText: {
+    fontSize: 36,
+  },
+  brand: {
+    fontSize: 27,
+    fontWeight: '800',
+    color: '#292044',
+    marginTop: 12,
+  },
+  tagline: {
+    fontSize: 10,
+    letterSpacing: 2,
+    color: '#8B82A9',
+    marginTop: 5,
+  },
+  hero: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  circle: {
+    width: 190,
+    height: 190,
+    borderRadius: 95,
+    backgroundColor: '#E8DFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 32,
+  },
+  heroEmoji: {
+    fontSize: 85,
+  },
+  smallCircle: {
+    position: 'absolute',
+    right: 5,
+    top: 15,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  heading: {
+    fontSize: 34,
+    fontWeight: '800',
+    color: '#292044',
     textAlign: 'center',
+    lineHeight: 42,
   },
-  code: {
-    textTransform: 'uppercase',
+  description: {
+    fontSize: 15,
+    color: '#79718E',
+    textAlign: 'center',
+    lineHeight: 24,
+    marginTop: 14,
+    paddingHorizontal: 5,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  features: {
+    marginTop: 24,
+    gap: 12,
+  },
+  feature: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  featureIcon: {
+    width: 23,
+    height: 23,
+    borderRadius: 12,
+    backgroundColor: '#E3DAFF',
+    color: '#6C4CE4',
+    textAlign: 'center',
+    lineHeight: 23,
+    fontWeight: 'bold',
+  },
+  featureText: {
+    fontSize: 14,
+    color: '#51476B',
+  },
+  bottom: {
+    paddingBottom: 18,
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#6C4CE4',
+    width: '100%',
+    paddingVertical: 17,
+    borderRadius: 16,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  footer: {
+    color: '#9B93B2',
+    fontSize: 12,
+    marginTop: 16,
   },
 });
